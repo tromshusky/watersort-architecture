@@ -1,0 +1,33 @@
+Watersort is a game with Bottles on a Board.
+A Board contains minimum 3 and maximum 16 Bottles.
+A Board uses a set of colors, depending on the amount of colors.
+A Bottle contains minimum 2 and maximum 8 slots.
+The amount of colors must be 2 or more.
+Because a Board needs to be solvable, there can be maximum as many colors as corresponding solved bottles will be.
+It is default but not necessary to have all Bottles with the same amount of slots.
+Slots are ordered vertically.
+A Slot may be filled with a Color, if it is not above an empty slot. Otherwise its an empty Slot.
+The initial state of a Board has to be solvable.
+A Solved Bottle contains only one Color in all slots.
+You may only pour into a Bottle that has at least one empty slot.
+You may pour onto an empty Bottle or onto a Bottle whose current top Color matches the Color being poured.
+A pour moves a contiguous run of same-colored units from the top of the source Bottle.
+A pour stops only when the destination Bottle is full or when the next unit in the source is a different Color.
+Only moves that changes the board are counted and logged.
+The total count of each Color is conserved across moves.
+The puzzle is solved when every Bottle is either Empty or Solved.
+Its possible to reset the current board to its initial state, including undos and hints.
+Optionally allow undoing moves.
+Optionally provide hints, which shows the next move for the quickest solve from the current state.
+
+On a finished career game, the sequence of moves get stored, and is replaced when finished with an even shorter solution.
+A seed is a 16-digit integer.
+Given the same seed and board parameters, the same state has to be generated.
+The career levels are the list of solvable boards generated from start seed 0, S+1 calculated by (S+1000000007) % (2^50).
+The career levels increase difficulty every 5 levels until level 50.
+Levels dividable by 25 are extra difficult (more bottles and slots per bottle).
+Levels dividable by 100 have difficulty extreme.
+Levels that end with -1 -3 -7 and -9 are easier (fewer bottles and slots per bottle).
+These parameters (amount bottles, slots per bottle) must be reproducible (no sideeffects) given the level number.
+Undos are unlimited in career levels, on extreme difficulty there is no Undo.
+There is one hint per career level, on extreme difficulty there is none.
