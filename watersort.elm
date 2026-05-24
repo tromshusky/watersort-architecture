@@ -1,25 +1,13 @@
 module Watersort exposing (..)
 
+type Color = Red | Blue | Green | Yellow | Purple | Orange | Pink | Cyan | Brown | Gray | Black | White | Lime | Navy | Teal | Magenta
 
--- Colors
-
-type Color
-    = Red | Blue | Green | Yellow | Purple | Orange | Pink | Cyan
-    | Brown | Gray | Black | White | Lime | Navy | Teal | Magenta
-
-
--- Bottle structure
-
-type Slot
-    = Empty | Filled Color
+type Slot = Empty | Filled Color
 
 type alias Bottle =
     { slots : List Slot
     , capacity : Int
     }
-
-
--- Board and game state
 
 type alias Board =
     { bottles : List Bottle
@@ -34,9 +22,6 @@ type alias GameState =
     , initialBoard : Board
     }
 
-
--- Moves and difficulty
-
 type alias Move =
     { fromBottle : Int
     , toBottle : Int
@@ -44,8 +29,7 @@ type alias Move =
     , unitsMoved : Int
     }
 
-type Difficulty
-    = Easy | Normal | Hard | Extreme
+type Difficulty = Easy | Normal | Hard | Extreme
 
 type alias LevelParameters =
     { numBottles : Int
@@ -53,43 +37,52 @@ type alias LevelParameters =
     , difficulty : Difficulty
     }
 
-
--- Utility functions
-
 emptyBottle : Int -> Bottle
-emptyBottle capacity = { slots = List.repeat capacity Empty, capacity = capacity }
 
 emptyBoard : Int -> Int -> Int -> Board
-emptyBoard numBottles slotsPerBottle numColors = { bottles = List.repeat numBottles (emptyBottle slotsPerBottle), numColors = numColors }
 
 isSolvedBottle : Bottle -> Bool
+
+isBoardSolved : Board -> Bool
+
+isBottleSolvedOrEmpty : Bottle -> Bool
+
+hasEmptySlot : Bottle -> Bool
+
+getTopColor : Bottle -> Maybe Color
+
+countEmptySlots : Bottle -> Int
+
+nextSeed : Int -> Int
+
+levelParameters : Int -> LevelParameters
+
+
+
+emptyBottle capacity = { slots = List.repeat capacity Empty, capacity = capacity }
+
+emptyBoard numBottles slotsPerBottle numColors = { bottles = List.repeat numBottles (emptyBottle slotsPerBottle), numColors = numColors }
+
 isSolvedBottle bottle = case bottle.slots of
     [] -> True
     first :: rest -> case first of
         Empty -> False
         Filled color -> List.all (\slot -> slot == Filled color) rest
 
-isBoardSolved : Board -> Bool
 isBoardSolved board = List.all isBottleSolvedOrEmpty board.bottles
 
-isBottleSolvedOrEmpty : Bottle -> Bool
 isBottleSolvedOrEmpty bottle = if List.all (\slot -> slot == Empty) bottle.slots then True else isSolvedBottle bottle
 
-hasEmptySlot : Bottle -> Bool
 hasEmptySlot bottle = List.any (\slot -> slot == Empty) bottle.slots
 
-getTopColor : Bottle -> Maybe Color
 getTopColor bottle = bottle.slots |> List.reverse |> List.dropWhile (\slot -> slot == Empty) |> List.head |> Maybe.andThen (\slot -> case slot of
     Empty -> Nothing
     Filled color -> Just color)
 
-countEmptySlots : Bottle -> Int
 countEmptySlots bottle = List.length (List.filter (\slot -> slot == Empty) bottle.slots)
 
-nextSeed : Int -> Int
 nextSeed seed = (seed + 1000000007) |> modBy (2 ^ 50)
 
-levelParameters : Int -> LevelParameters
 levelParameters levelNum =
     let
         baseDifficulty = (levelNum // 5) |> min 9
