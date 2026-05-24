@@ -14,7 +14,7 @@ type alias Board =
     , numColors : Int
     }
 
-type alias GameState =
+type alias LevelProgress =
     { board : Board
     , moves : List Move
     , seed : Int
@@ -37,9 +37,15 @@ type alias LevelParameters =
     , difficulty : Difficulty
     }
 
-emptyBottle : Int -> Bottle
+type alias BottleSize = Int
 
-emptyBoard : Int -> Int -> Int -> Board
+type alias ColorPaletteSize = Int
+
+type alias BottlesPerBoard = Int
+
+emptyBottle : BottleSize -> Bottle
+
+emptyBoard : BottlesPerBoard -> BottleSize -> ColorPaletteSize -> Board
 
 isSolvedBottle : Bottle -> Bool
 
